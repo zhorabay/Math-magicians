@@ -1,6 +1,6 @@
 import './Calculator.css';
 
-function App() {
+function Calculator() {
   return (
     <div className="calculator-grid">
       <div className="output">0</div>
@@ -27,4 +27,4 @@ function App() {
   );
 }
 
-export default App;
+export default Calculator;
