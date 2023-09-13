@@ -9,7 +9,7 @@
   - [🛠 Built With ](#-built-with-)
     - [Tech Stack ](#tech-stack-)
     - [Key Features ](#key-features-)
-  - [� Getting Started ](#-getting-started-)
+  - [💻 Getting Started ](#-getting-started-)
     - [Prerequisites](#prerequisites)
   - [👥 Authors ](#-authors-)
   - [🔭 Future Features ](#-future-features-)
@@ -28,7 +28,8 @@
 
 ### Key Features <a name="key-features"></a>
 
-- **[User can see live react icon]**
+- **[User can see calculator]**
+- **[User can do simple math calculations]**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -51,7 +52,7 @@ To get a local copy up and running follow these simple example steps.
 - write: git clone git@github.com:zhorabay/Math-magicians.git
 - get into to directory "Math-magicians"
 - write: npm install
-- write: cd my-app => npm start
+- write: npm start
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -69,8 +70,8 @@ To get a local copy up and running follow these simple example steps.
 
 ## 🔭 Future Features <a name="future-features"></a>
 
-- [ ] **[Work with components]**
-- [ ] **[Work with events]**
+- [ ] **[Work with an user interface]**
+- [ ] **[Work with API]**
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
