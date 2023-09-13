@@ -1,98 +1,117 @@
-import { evaluate } from './operate';
-import ACTIONS from './actions';
+import Big from 'big.js';
 
-function reducer(state, { type, payload }) {
-  switch (type) {
-    case ACTIONS.ADD_DIGIT:
-      if (state.overwrite) {
-        return {
-          ...state,
-          currentOperand: payload.digit,
-          overwrite: false,
-        };
-      }
-      if (payload.digit === '0' && state.currentOperand === '0') {
-        return state;
-      }
-      if (payload.digit === '.' && state.currentOperand.includes('.')) {
-        return state;
-      }
+export default function calculate(obj, buttonName) {
+  const { currentOperand, previousOperand, operation } = obj;
+  let result;
 
+  switch (buttonName) {
+    case 'AC':
       return {
-        ...state,
-        currentOperand: `${state.currentOperand || ''}${payload.digit}`,
-      };
-    case ACTIONS.CHOOSE_OPERATION:
-      if (state.currentOperand == null && state.previousOperand == null) {
-        return state;
-      }
-
-      if (state.currentOperand == null) {
-        return {
-          ...state,
-          operation: payload.operation,
-        };
-      }
-
-      if (state.previousOperand == null) {
-        return {
-          ...state,
-          operation: payload.operation,
-          previousOperand: state.currentOperand,
-          currentOperand: null,
-        };
-      }
-
-      return {
-        ...state,
-        previousOperand: evaluate(state),
-        operation: payload.operation,
         currentOperand: null,
-      };
-
-    case ACTIONS.CLEAR:
-      return {};
-
-    case ACTIONS.MAKE_NEGATIVE:
-      if (state.currentOperand !== null) {
-        const newOperand = parseFloat(state.currentOperand) * -1;
-        return {
-          ...state,
-          currentOperand: newOperand.toString(),
-        };
-      }
-      return state;
-
-    case ACTIONS.GIVE_PERCENTAGE:
-      if (state.currentOperand !== null) {
-        const newOperand = (parseFloat(state.currentOperand) / 100).toString();
-        return {
-          ...state,
-          currentOperand: newOperand,
-        };
-      }
-      return state;
-
-    case ACTIONS.EVALUATE:
-      if (
-        state.operation == null
-        || state.currentOperand == null
-        || state.previousOperand == null
-      ) {
-        return state;
-      }
-
-      return {
-        ...state,
-        overwrite: true,
         previousOperand: null,
         operation: null,
-        currentOperand: evaluate(state),
       };
-
+    case '+/-':
+      if (currentOperand) {
+        result = Big(currentOperand).times(-1).toString();
+        return {
+          currentOperand: result,
+          previousOperand,
+          operation,
+        };
+      }
+      return obj;
+    case '%':
+      if (currentOperand) {
+        result = Big(currentOperand).div(100).toString();
+        return {
+          currentOperand: result,
+          previousOperand,
+          operation,
+        };
+      }
+      return obj;
+    case '+':
+    case '-':
+    case 'x':
+    case '÷':
+      if (currentOperand && previousOperand) {
+        switch (operation) {
+          case '+':
+            result = Big(previousOperand).plus(currentOperand).toString();
+            break;
+          case '-':
+            result = Big(previousOperand).minus(currentOperand).toString();
+            break;
+          case 'x':
+            result = Big(previousOperand).times(currentOperand).toString();
+            break;
+          case '÷':
+            if (currentOperand === '0') {
+              return { ...obj, currentOperand: "Can't divide by 0." };
+            }
+            result = Big(previousOperand).div(currentOperand).toString();
+            break;
+          default:
+            return obj;
+        }
+        return {
+          currentOperand: result,
+          previousOperand: result,
+          operation: buttonName,
+        };
+      }
+      if (currentOperand) {
+        return {
+          currentOperand,
+          previousOperand: currentOperand,
+          operation: buttonName,
+        };
+      }
+      return obj;
+    case '=':
+      if (currentOperand && previousOperand && operation) {
+        switch (operation) {
+          case '+':
+            result = Big(previousOperand).plus(currentOperand).toString();
+            break;
+          case '-':
+            result = Big(previousOperand).minus(currentOperand).toString();
+            break;
+          case 'x':
+            result = Big(previousOperand).times(currentOperand).toString();
+            break;
+          case '÷':
+            if (currentOperand === '0') {
+              return { ...obj, currentOperand: "Can't divide by 0." };
+            }
+            result = Big(previousOperand).div(currentOperand).toString();
+            break;
+          default:
+            return obj;
+        }
+        return {
+          currentOperand: result,
+          previousOperand: ' ',
+          operation: ' ',
+        };
+      }
+      return obj;
     default:
-      return state;
+      if (buttonName === '0' && currentOperand === '0') {
+        return obj;
+      }
+      if (operation === '=') {
+        return {
+          currentOperand: buttonName,
+          previousOperand: null,
+          operation: null,
+        };
+      }
+      return {
+        currentOperand: currentOperand === '0' ? buttonName : currentOperand + buttonName,
+        previousOperand,
+        operation,
+      };
   }
 }
-
-export default reducer;

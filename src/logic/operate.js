@@ -1,105 +1,30 @@
-import PropTypes from 'prop-types';
-import ACTIONS from './actions';
+import Big from 'big.js';
 
-export function OperationButton({ dispatch, operation, className }) {
-  return (
-    <button
-      type="button"
-      className={`operation-button ${className}`}
-      onClick={() => dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operation } })}
-    >
-      {operation}
-    </button>
-  );
-}
-
-OperationButton.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  operation: PropTypes.string.isRequired,
-  className: PropTypes.string.isRequired,
-};
-
-export function ToggleSignButton({ dispatch }) {
-  return (
-    <button
-      type="button"
-      onClick={() => dispatch({ type: ACTIONS.MAKE_NEGATIVE })}
-    >
-      +/-
-    </button>
-  );
-}
-
-ToggleSignButton.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
-export function PercentageButton({ dispatch }) {
-  return (
-    <button
-      type="button"
-      onClick={() => dispatch({ type: ACTIONS.GIVE_PERCENTAGE })}
-    >
-      %
-    </button>
-  );
-}
-
-PercentageButton.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
-export function DigitButton({ dispatch, digit, className }) {
-  return (
-    <button
-      type="button"
-      className={`digit-button ${className}`}
-      onClick={() => dispatch({ type: ACTIONS.ADD_DIGIT, payload: { digit } })}
-    >
-      {digit}
-    </button>
-  );
-}
-
-DigitButton.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  digit: PropTypes.string.isRequired,
-  className: PropTypes.string.isRequired,
-};
-
-export function evaluate({ currentOperand, previousOperand, operation }) {
-  const prev = parseFloat(previousOperand);
-  const current = parseFloat(currentOperand);
-  if (Number.isNaN(prev) || Number.isNaN(current)) return '';
-  let computation = '';
-  switch (operation) {
-    case '+':
-      computation = prev + current;
-      break;
-    case '-':
-      computation = prev - current;
-      break;
-    case 'x':
-      computation = prev * current;
-      break;
-    case '÷':
-      computation = prev / current;
-      break;
-    default:
-      break;
+export default function operate(numberOne, numberTwo, operation) {
+  const one = Big(numberOne);
+  const two = Big(numberTwo);
+  if (operation === '+') {
+    return one.plus(two).toString();
   }
-  return computation.toString();
-}
-
-const INTEGER_FORMATTER = new Intl.NumberFormat('en-us', {
-  maximumFractionDigits: 0,
-});
-
-export function formatOperand(operand) {
-  if (operand == null) return undefined;
-  const [integer, decimal] = operand.split('.');
-  if (decimal == null) {
-    return INTEGER_FORMATTER.format(integer);
+  if (operation === '-') {
+    return one.minus(two).toString();
   }
-  return `${INTEGER_FORMATTER.format(integer)}.${decimal}`;
+  if (operation === 'x') {
+    return one.times(two).toString();
+  }
+  if (operation === '÷') {
+    try {
+      return one.div(two).toString();
+    } catch (err) {
+      return "Can't divide by 0.";
+    }
+  }
+  if (operation === '%') {
+    try {
+      return one.mod(two).toString();
+    } catch (err) {
+      return "Can't find modulo as can't divide by 0.";
+    }
+  }
+  throw Error(`Unknown operation '${operation}'`);
 }

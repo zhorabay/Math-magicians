@@ -1,43 +1,66 @@
 import './Calculator.css';
-import { useReducer } from 'react';
-import reducer from '../logic/calculate';
-import {
-  OperationButton, ToggleSignButton, PercentageButton, DigitButton, formatOperand,
-} from '../logic/operate';
-import ACTIONS from '../logic/actions';
+import React, { useReducer } from 'react';
+import calculate from '../logic/calculate';
+
+const initialState = {
+  currentOperand: null,
+  previousOperand: null,
+  operation: null,
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'CLEAR':
+      return calculate(state, 'AC');
+    case 'TOGGLE_SIGN':
+      return calculate(state, '+/-');
+    case 'PERCENTAGE':
+      return calculate(state, '%');
+    case 'OPERATION':
+      return calculate(state, action.operation);
+    case 'DIGIT':
+      return calculate(state, action.digit);
+    case 'EQUALS':
+      return calculate(state, '=');
+    default:
+      return state;
+  }
+}
 
 function Calculator() {
-  const [{ currentOperand, previousOperand, operation }, dispatch] = useReducer(reducer, {});
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const formatOperand = (operand) => operand || '0';
 
   return (
     <div className="calculator-grid">
       <div className="output">
         <div className="previous-operand">
-          {formatOperand(previousOperand)}
+          {formatOperand(state.previousOperand)}
           {' '}
-          {operation}
+          {state.operation}
         </div>
-        <div className="current-operand">{formatOperand(currentOperand)}</div>
+        <div className="current-operand">{formatOperand(state.currentOperand)}</div>
       </div>
-      <button type="button" onClick={() => dispatch({ type: ACTIONS.CLEAR })}>AC</button>
-      <ToggleSignButton dispatch={dispatch} />
-      <PercentageButton dispatch={dispatch} />
-      <OperationButton className="symbol-bg" operation="÷" dispatch={dispatch} />
-      <DigitButton digit="7" dispatch={dispatch} />
-      <DigitButton digit="8" dispatch={dispatch} />
-      <DigitButton digit="9" dispatch={dispatch} />
-      <OperationButton className="symbol-bg" operation="x" dispatch={dispatch} />
-      <DigitButton digit="4" dispatch={dispatch} />
-      <DigitButton digit="5" dispatch={dispatch} />
-      <DigitButton digit="6" dispatch={dispatch} />
-      <OperationButton className="symbol-bg" operation="-" dispatch={dispatch} />
-      <DigitButton digit="1" dispatch={dispatch} />
-      <DigitButton digit="2" dispatch={dispatch} />
-      <DigitButton digit="3" dispatch={dispatch} />
-      <OperationButton className="symbol-bg" operation="+" dispatch={dispatch} />
-      <DigitButton className="span-two" digit="0" dispatch={dispatch} />
-      <DigitButton digit="." dispatch={dispatch} />
-      <button type="button" className="symbol-bg" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
+      <button type="button" onClick={() => dispatch({ type: 'CLEAR' })}>AC</button>
+      <button type="button" onClick={() => dispatch({ type: 'TOGGLE_SIGN' })}>+/-</button>
+      <button type="button" onClick={() => dispatch({ type: 'PERCENTAGE' })}>%</button>
+      <button type="button" className="symbol-bg" onClick={() => dispatch({ type: 'OPERATION', operation: '÷' })}>÷</button>
+      <button type="button" onClick={() => dispatch({ type: 'DIGIT', digit: '7' })}>7</button>
+      <button type="button" onClick={() => dispatch({ type: 'DIGIT', digit: '8' })}>8</button>
+      <button type="button" onClick={() => dispatch({ type: 'DIGIT', digit: '9' })}>9</button>
+      <button type="button" className="symbol-bg" onClick={() => dispatch({ type: 'OPERATION', operation: 'x' })}>x</button>
+      <button type="button" onClick={() => dispatch({ type: 'DIGIT', digit: '4' })}>4</button>
+      <button type="button" onClick={() => dispatch({ type: 'DIGIT', digit: '5' })}>5</button>
+      <button type="button" onClick={() => dispatch({ type: 'DIGIT', digit: '6' })}>6</button>
+      <button type="button" className="symbol-bg" onClick={() => dispatch({ type: 'OPERATION', operation: '-' })}>-</button>
+      <button type="button" onClick={() => dispatch({ type: 'DIGIT', digit: '1' })}>1</button>
+      <button type="button" onClick={() => dispatch({ type: 'DIGIT', digit: '2' })}>2</button>
+      <button type="button" onClick={() => dispatch({ type: 'DIGIT', digit: '3' })}>3</button>
+      <button type="button" className="symbol-bg" onClick={() => dispatch({ type: 'OPERATION', operation: '+' })}>+</button>
+      <button type="button" className="span-two" onClick={() => dispatch({ type: 'DIGIT', digit: '0' })}>0</button>
+      <button type="button" onClick={() => dispatch({ type: 'DIGIT', digit: '.' })}>.</button>
+      <button type="button" className="symbol-bg" onClick={() => dispatch({ type: 'EQUALS' })}>=</button>
     </div>
   );
 }
