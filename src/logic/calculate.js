@@ -104,8 +104,8 @@ export default function calculate(obj, buttonName) {
       if (operation === '=') {
         return {
           currentOperand: buttonName,
-          previousOperand: null,
-          operation: null,
+          previousOperand: ' ',
+          operation: ' ',
         };
       }
       return {

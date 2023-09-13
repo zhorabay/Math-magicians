@@ -3,25 +3,75 @@ import React, { useReducer } from 'react';
 import calculate from '../logic/calculate';
 
 const initialState = {
-  currentOperand: null,
-  previousOperand: null,
+  currentOperand: '0',
+  previousOperand: '',
   operation: null,
+  waitingForOperand: false,
+  decimalUsed: false,
+  newCalculation: true,
 };
 
 function reducer(state, action) {
   switch (action.type) {
     case 'CLEAR':
-      return calculate(state, 'AC');
+      return initialState;
     case 'TOGGLE_SIGN':
-      return calculate(state, '+/-');
+      return {
+        ...state,
+        currentOperand: state.currentOperand.charAt(0) === '-' ? state.currentOperand.slice(1) : `-${state.currentOperand}`,
+      };
     case 'PERCENTAGE':
-      return calculate(state, '%');
+      return {
+        ...state,
+        currentOperand: (parseFloat(state.currentOperand) / 100).toString(),
+      };
     case 'OPERATION':
-      return calculate(state, action.operation);
+      if (state.waitingForOperand) {
+        return {
+          ...state,
+          operation: action.operation,
+        };
+      }
+      if (state.operation) {
+        return calculate({ ...state, waitingForOperand: true }, '=');
+      }
+      return {
+        ...state,
+        waitingForOperand: true,
+        operation: action.operation,
+        previousOperand: state.currentOperand,
+        currentOperand: '0',
+        decimalUsed: false,
+        newCalculation: true,
+      };
     case 'DIGIT':
-      return calculate(state, action.digit);
+      if (state.waitingForOperand) {
+        return {
+          ...state,
+          currentOperand: action.digit,
+          waitingForOperand: false,
+          decimalUsed: false,
+        };
+      }
+      if (action.digit === '.' && state.decimalUsed) {
+        return state;
+      }
+      if (action.digit === '.') {
+        return {
+          ...state,
+          currentOperand: state.currentOperand + action.digit,
+          decimalUsed: true,
+        };
+      }
+      return {
+        ...state,
+        currentOperand: state.currentOperand === '0' ? action.digit : state.currentOperand + action.digit,
+      };
     case 'EQUALS':
-      return calculate(state, '=');
+      if (state.operation) {
+        return calculate(state, '=');
+      }
+      return state;
     default:
       return state;
   }
@@ -30,17 +80,14 @@ function reducer(state, action) {
 function Calculator() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const formatOperand = (operand) => operand || '0';
-
   return (
     <div className="calculator-grid">
       <div className="output">
         <div className="previous-operand">
-          {formatOperand(state.previousOperand)}
-          {' '}
+          {state.previousOperand}
           {state.operation}
         </div>
-        <div className="current-operand">{formatOperand(state.currentOperand)}</div>
+        <div className="current-operand">{state.currentOperand}</div>
       </div>
       <button type="button" onClick={() => dispatch({ type: 'CLEAR' })}>AC</button>
       <button type="button" onClick={() => dispatch({ type: 'TOGGLE_SIGN' })}>+/-</button>
