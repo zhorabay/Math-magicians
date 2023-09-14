@@ -18,7 +18,10 @@ function reducer(state, action) {
     case 'TOGGLE_SIGN':
       return {
         ...state,
-        currentOperand: state.currentOperand.charAt(0) === '-' ? state.currentOperand.slice(1) : `-${state.currentOperand}`,
+        currentOperand:
+          state.currentOperand.charAt(0) === '-'
+            ? state.currentOperand.slice(1)
+            : `-${state.currentOperand}`,
       };
     case 'PERCENTAGE':
       return {
@@ -33,7 +36,16 @@ function reducer(state, action) {
         };
       }
       if (state.operation) {
-        return calculate({ ...state, waitingForOperand: true }, '=');
+        const updatedState = calculate(state, '=');
+        return {
+          ...updatedState,
+          waitingForOperand: true,
+          newCalculation: true,
+          operation: action.operation,
+          previousOperand: state.currentOperand,
+          currentOperand: '0',
+          decimalUsed: false,
+        };
       }
       return {
         ...state,
@@ -42,7 +54,6 @@ function reducer(state, action) {
         previousOperand: state.currentOperand,
         currentOperand: '0',
         decimalUsed: false,
-        newCalculation: true,
       };
     case 'DIGIT':
       if (state.waitingForOperand) {
@@ -65,7 +76,8 @@ function reducer(state, action) {
       }
       return {
         ...state,
-        currentOperand: state.currentOperand === '0' ? action.digit : state.currentOperand + action.digit,
+        currentOperand:
+          state.currentOperand === '0' ? action.digit : state.currentOperand + action.digit,
       };
     case 'EQUALS':
       if (state.operation) {
@@ -94,8 +106,12 @@ function Calculator() {
         </div>
         <div className="current-operand">{state.currentOperand}</div>
       </div>
-      <button type="button" onClick={() => dispatch({ type: 'CLEAR' })}>AC</button>
-      <button type="button" onClick={() => dispatch({ type: 'TOGGLE_SIGN' })}>+/-</button>
+      <button type="button" onClick={() => dispatch({ type: 'CLEAR' })}>
+        AC
+      </button>
+      <button type="button" onClick={() => dispatch({ type: 'TOGGLE_SIGN' })}>
+        +/-
+      </button>
       <button type="button" onClick={() => dispatch({ type: 'PERCENTAGE' })}>%</button>
       <button type="button" className="symbol-bg" onClick={() => dispatch({ type: 'OPERATION', operation: '÷' })}>÷</button>
       <button type="button" onClick={() => dispatch({ type: 'DIGIT', digit: '7' })}>7</button>
