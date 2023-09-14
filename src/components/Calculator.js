@@ -69,7 +69,12 @@ function reducer(state, action) {
       };
     case 'EQUALS':
       if (state.operation) {
-        return calculate(state, '=');
+        const updatedState = calculate(state, '=');
+        return {
+          ...updatedState,
+          waitingForOperand: true,
+          newCalculation: true,
+        };
       }
       return state;
     default:
