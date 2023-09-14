@@ -1,0 +1,74 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* Calculator styling */
+
+.calculator {
+  width: 35%;
+  margin: 30px auto;
+  background-color: #cbcbcb;
+  text-align: right;
+}
+
+.display {
+  font-size: 36px;
+  padding: 10px;
+  background-color: gray;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+button {
+  font-size: 24px;
+  padding: 10px;
+  border: 1px solid rgb(183, 183, 183);
+  cursor: pointer;
+  background-color: #e5e5e5;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+button:active {
+  background-color: #222;
+}
+
+.span-two {
+  grid-column: span 2;
+}
+
+.symbol-bg {
+  background-color: orange;
+}
+
+/* Quote styling */
+
+.quote-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  width: 60%;
+  margin: 80px auto;
+}
+
+.quote {
+  text-align: center;
+  font-weight: 500;
+  font-size: 18px;
+  font-style: italic;
+}
+
+.quote-author {
+  align-self: flex-end;
+  font-weight: 300;
+  font-size: 14px;
+}
