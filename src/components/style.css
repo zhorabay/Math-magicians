@@ -3,7 +3,32 @@
   margin: 0;
 }
 
+/* Navbar styling */
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* Home styling */
+
+.home-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  gap: 50px;
+}
+
 /* Calculator styling */
+
+.calculator-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 80px;
+}
 
 .calculator {
   width: 35%;
