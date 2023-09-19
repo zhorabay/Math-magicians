@@ -7,32 +7,37 @@ function Quote() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = () => {
+    const fetchData = async () => {
       const category = 'education';
       const apiKey = 'f43KyTOqfaUkfa3a36GGcsjbsNvlENjE2mpBHy7M';
       setIsLoading(true);
-      fetch(`https://api.api-ninjas.com/v1/quotes?category=${category}`, {
-        method: 'GET',
-        headers: {
-          'X-Api-Key': apiKey,
-          'Content-Type': 'application/json',
-        },
-      })
-        .then((res) => res.json())
-        .then((json) => {
+
+      try {
+        const response = await fetch(`https://api.api-ninjas.com/v1/quotes?category=${category}`, {
+          method: 'GET',
+          headers: {
+            'X-Api-Key': apiKey,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const json = await response.json();
           if (json.length > 0) {
             setQuote(json[0]);
           } else {
             setHasError(true);
           }
-        })
-        .catch(() => {
+        } else {
           setHasError(true);
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+        }
+      } catch (error) {
+        setHasError(true);
+      } finally {
+        setIsLoading(false);
+      }
     };
+
     fetchData();
   }, [setQuote, setIsLoading]);
 

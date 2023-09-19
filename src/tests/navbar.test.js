@@ -1,19 +1,28 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 
-test('renders Navbar component correctly', () => {
-  const { container } = render(<Navbar />);
-  expect(container).toMatchSnapshot();
-});
+const TestWrapper = () => (
+  <Router>
+    <Navbar />
+  </Router>
+);
 
-test('contains navigation links', () => {
-  const { getByText } = render(<Navbar />);
-  const homeLink = getByText('Home');
-  const calculatorLink = getByText('Calculator');
-  const quoteLink = getByText('Quote');
+describe('Navbar', () => {
+  it('contains navigation links', () => {
+    render(<TestWrapper />);
 
-  expect(homeLink).toBeInTheDocument();
-  expect(calculatorLink).toBeInTheDocument();
-  expect(quoteLink).toBeInTheDocument();
+    const homeLink = screen.getByRole('link', { name: /home/i });
+    expect(homeLink).toHaveAttribute('href', '/');
+    expect(homeLink).toHaveTextContent('Home');
+
+    const calculatorLink = screen.getByRole('link', { name: /calculator/i });
+    expect(calculatorLink).toHaveAttribute('href', '/calculator');
+    expect(calculatorLink).toHaveTextContent('Calculator');
+
+    const quoteLink = screen.getByRole('link', { name: /quote/i });
+    expect(quoteLink).toHaveAttribute('href', '/quote');
+    expect(quoteLink).toHaveTextContent('Quote');
+  });
 });
