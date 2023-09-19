@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import Navbar from './Navbar';
+import Navbar from '../components/Navbar';
 
 test('renders Navbar component correctly', () => {
   const { container } = render(<Navbar />);

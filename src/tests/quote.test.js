@@ -1,7 +1,6 @@
 import React from 'react';
-import { render} from '@testing-library/react';
+import { render } from '@testing-library/react';
 import Quote from '../components/Quote';
-
 
 test('renders Quote component correctly', () => {
   const { container } = render(<Quote />);
@@ -9,13 +8,13 @@ test('renders Quote component correctly', () => {
 });
 
 test('displays loading text when isLoading is true', () => {
-  const { getByText } = render(<Quote isLoading={true} />);
+  const { getByText } = render(<Quote isLoading />);
   const loadingText = getByText('Loading...');
   expect(loadingText).toBeInTheDocument();
 });
 
 test('displays error message when hasError is true', () => {
-  const { getByText } = render(<Quote hasError={true} />);
+  const { getByText } = render(<Quote hasError />);
   const errorMessage = getByText('Something went wrong!');
   expect(errorMessage).toBeInTheDocument();
 });
