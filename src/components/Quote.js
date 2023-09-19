@@ -42,8 +42,13 @@ function Quote() {
 
   return (
     <div className="quote-flex">
-      <h3 className="quote">{quote.quote}</h3>
-      <h5 className="quote-author">{quote.author}</h5>
+      <h3 className="quote">
+        {quote.quote}
+        <span className="quote-author">
+          -
+          {quote.author}
+        </span>
+      </h3>
     </div>
   );
 }
