@@ -7,6 +7,7 @@ jest.mock('../logic/operate', () => ({
     if (operation === '-') return (parseFloat(total) - parseFloat(next)).toString();
     if (operation === '×') return (parseFloat(total) * parseFloat(next)).toString();
     if (operation === '÷') return (parseFloat(total) / parseFloat(next)).toString();
+    return '0';
   },
 }));
 
@@ -23,11 +24,10 @@ describe('calculate', () => {
   test('should update calculator state correctly when numeric buttons are pressed', () => {
     const result1 = calculate({ total: '10', next: '5', operation: '+' }, '2');
     expect(result1).toEqual({ total: '10', next: '52', operation: '+' });
-  
+
     const result2 = calculate({ total: '0', next: '0', operation: null }, '0');
     expect(result2).toEqual({});
   });
-  
 
   test('should handle the "=" button correctly', () => {
     const result = calculate({ total: '10', next: '5', operation: '+' }, '=');
