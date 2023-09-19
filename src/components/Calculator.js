@@ -25,7 +25,7 @@ function Calculator() {
     <div className="calculator-flex">
       <h2>Let&apos;s do some math!</h2>
       <div className="calculator">
-        <div className="display">{displayValue}</div>
+        <div className="display" data-testid="calculator-display">{displayValue}</div>
         <div className="buttons">
           <button type="button" onClick={() => handleClick('AC')}>AC</button>
           <button type="button" onClick={() => handleClick('+/-')}>+/-</button>
@@ -43,7 +43,7 @@ function Calculator() {
           <button type="button" onClick={() => handleClick('2')}>2</button>
           <button type="button" onClick={() => handleClick('3')}>3</button>
           <button type="button" className="symbol-bg" onClick={() => handleClick('+')}>+</button>
-          <button type="button" className="span-two" onClick={() => handleClick('0')}>0</button>
+          <button type="button" className="span-two" data-testid="display" onClick={() => handleClick('0')}>0</button>
           <button type="button" onClick={() => handleClick('.')}>.</button>
           <button type="button" className="symbol-bg" onClick={() => handleClick('=')}>=</button>
         </div>
