@@ -1,0 +1,160 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  background-image: url(../images/50-Beautiful-and-Minimalist-Presentation-Backgrounds-05.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Navbar styling */
+
+.navbar {
+  display: flex;
+  justify-content: space-around;
+  padding: 30px;
+  background-color: rgb(115, 160, 23);
+  box-shadow: 2px 3px 5px rgb(53, 66, 30);
+}
+
+.logo {
+  font-size: 35px;
+  font-style: oblique;
+  color: bisque;
+}
+
+.links {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.links a {
+  font-size: 22px;
+  font-weight: 500;
+  border-right: 2px solid rgb(53, 66, 30);
+  text-decoration: none;
+  padding-right: 16px;
+  color: darkblue;
+}
+
+.links a:hover {
+  color: bisque;
+}
+
+/* Home styling */
+
+.home-flex {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  gap: 50px;
+  margin: 80px auto;
+}
+
+.home-flex h2 {
+  font-size: 27px;
+  color: #010547;
+}
+
+.home-flex p {
+  color: #010547;
+  font-size: 18px;
+  font-style: italic;
+  line-height: 30px;
+}
+
+/* Calculator styling */
+
+.calculator-flex {
+  display: flex;
+  justify-content: space-between;
+  margin: 80px auto;
+  width: 80%;
+}
+
+.calculator-flex h2 {
+  font-size: 27px;
+  color: #010547;
+  letter-spacing: 3px;
+}
+
+.calculator {
+  width: 30%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  background-color: #f9f9f9;
+  text-align: right;
+}
+
+.display {
+  font-size: 36px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.buttons {
+  display: grid;
+  margin-top: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 2rem;
+  background-color: #333;
+  color: #fff;
+  transition: background-color 0.2s;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+button:active {
+  background-color: #222;
+}
+
+.span-two {
+  grid-column: span 2;
+  border: 1px solid gray;
+}
+
+.symbol-bg {
+  background-color: orange;
+}
+
+/* Quote styling */
+
+.quote-flex {
+  text-align: left;
+  width: 80%;
+  margin: 160px 80px;
+}
+
+.quote {
+  color: #010547;
+  font-weight: 500;
+  font-size: 30px;
+  font-style: italic;
+  line-height: 60px;
+}
+
+.quote-author {
+  color: rgb(115, 160, 23);
+  align-self: flex-end;
+  font-weight: bold;
+  font-size: 30px;
+  padding: 0 5px;
+  letter-spacing: 5px;
+}
